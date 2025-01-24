@@ -164,7 +164,21 @@ sap.ui.define(
       _setDetailArea: function (oUserContext) {
         var oDetailArea = this.byId("detailArea"),
           oLayout = this.byId("defaultLayout"),
+          oOldContext,
           oSearchField = this.byId("searchField");
+
+        if (!oDetailArea) {
+          return;
+        }
+        
+        oOldContext = oDetailArea.getBindingContext();
+        if (oOldContext) {
+          oOldContext.setKeepAlive(false);
+        }
+        if (oUserContext) {
+          oUserContext.setKeepAlive(true),
+            this._setDetailArea.bind(this);
+        }
 
         oDetailArea.setBindingContext(oUserContext || null);
         // resize view
